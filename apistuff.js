@@ -11,7 +11,7 @@ module.exports = function(app) {
 
   app.post("/api/notes", function(req, res) {
     let dbData = JSON.parse(fs.readFileSync("./db/db.json"));
-    console.log(dbData);
+
     counter = dbData.length + 1;
 
     const newNote = {
@@ -19,7 +19,6 @@ module.exports = function(app) {
       text: req.body.text,
       id: counter
     };
-    console.log(newNote);
 
     if (!newNote.title || !newNote.text) {
       return res.status(400).json({ msg: "please fill title and text" });
@@ -31,6 +30,8 @@ module.exports = function(app) {
       if (err) throw err;
       console.log("Wrote to file");
     });
+    res.status(200);
+    res.json(newNote);
   });
 
   app.delete("/api/notes/:id", (req, res) => {
