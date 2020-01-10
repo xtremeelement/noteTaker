@@ -8,7 +8,7 @@ module.exports = function(app) {
   });
 
   app.post("/api/notes", function(req, res) {
-    const dbData = JSON.parse(fs.readFile("../../../db/db.json"));
+    let dbData = JSON.parse(fs.readFileSync("../../../db/db.json"));
 
     counter = dbData.length + 1;
 
@@ -24,16 +24,12 @@ module.exports = function(app) {
 
     dbData.push(newNote);
 
-    dbData = JSON.stringify(dbData);
+    dbData = JSON.stringify(dbData, null, 2);
 
     fs.writeFile("../../../db/db.json", data, function(err) {
       if (err) throw err;
       console.log("Wrote to file");
     });
-
-    Json.stringify(fs.writeFile("../../../db/db.json"));
-
-    counter++;
   });
 
   app.delete("/api/notes/:id", (req, res) => {
