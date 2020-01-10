@@ -35,6 +35,27 @@ module.exports = function(app) {
   });
 
   app.delete("/api/notes/:id", (req, res) => {
-    const deleteNote = req.body;
+    const note = req.body.id;
+    let db = fs.readFileSync("./db/db.json");
+    let items = JSON.parse(db);
+
+    const found = items.some(item => item.id === parseInt(req.params.id));
+
+    if (found) {
+      console.log(req.params.id);
+      items = items.filter(item => item.id !== parseInt(req.params.id));
+      console.log(items);
+    } else {
+      res
+        .status(400)
+        .json({ msg: `cant delete item with a id of ${req.params.id}` });
+    }
+
+    items = JSON.stringify(items, null, 2);
+    fs.writeFile("./db/db.json", items, function(err) {
+      if (err) throw err;
+      console.log("Member deleted");
+    });
+    res.json(items);
   });
 };
