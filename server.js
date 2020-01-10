@@ -10,8 +10,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("./public"));
 
-require("./renderhtml")(app);
 require("./apistuff")(app);
+require("./renderhtml")(app);
 
 app.listen(PORT, function(req, res) {
   console.log("http://localhost:" + PORT);
